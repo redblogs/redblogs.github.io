@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.2k 字
+                  3.6k 字
                 </span>
               
 
@@ -341,7 +341,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  14 分钟
+                  15 分钟
                 </span>
               
             </div>
@@ -365,12 +365,12 @@
         
           
             <h1 id="mac电脑使用hexo-github-pages部署博客"><a href="#mac电脑使用hexo-github-pages部署博客" class="headerlink" title="mac电脑使用hexo+github pages部署博客"></a>mac电脑使用hexo+github pages部署博客</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">时间飞逝，进步无他，决定搭建一个博客汇总下之前的笔记，重新拾起学习的心。  </span><br><span class="line">运维出身，本博客记录mac电脑使用hexo+github pages部署博客的流程。后续追加两篇关于hexo的基本知识和github pages的实现原理。</span><br></pre></td></tr></table></figure>
-<h2 id="博客上传或更新流程说明"><a href="#博客上传或更新流程说明" class="headerlink" title="博客上传或更新流程说明"></a>博客上传或更新流程说明</h2><p><img src="/images/alibaba.jpg" alt="添加图片"> ##插入流程图</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">流程说明:  </span><br><span class="line">本地编写md文件后，通过hexo生成静态HTML文件，然后推送文件到github托管index文件。</span><br></pre></td></tr></table></figure>
+<h2 id="博客上传或更新流程说明"><a href="#博客上传或更新流程说明" class="headerlink" title="博客上传或更新流程说明"></a>博客上传或更新流程说明</h2><p><img src="/images/01_upload/01_hexo/hexo_github.png" alt="flow_diagram">  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">流程说明:  </span><br><span class="line">本地编写md文件后，通过hexo转换生成静态HTML文件，然后hexo推送文件到github托管index文件。</span><br></pre></td></tr></table></figure>
 
 <h1 id="部署博客"><a href="#部署博客" class="headerlink" title="部署博客"></a>部署博客</h1><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mac电脑   </span><br><span class="line">github账号</span><br></pre></td></tr></table></figure>
-<h2 id="整体部署说明"><a href="#整体部署说明" class="headerlink" title="整体部署说明"></a>整体部署说明</h2><h3 id="博客上传流程图"><a href="#博客上传流程图" class="headerlink" title="博客上传流程图"></a>博客上传流程图</h3><p><img src="/images/alibaba.jpg" alt="添加图片"> ##插入流程图</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">部署说明:  </span><br><span class="line">githu为展示页面，类似web服务器访问根目录默认网页为index.html。hexo + github博客本质上将github作为web服务器，访问对应目录的index网页即可获取不同的博客内容，hexo的作用则是将本地编写的md文件生成静态HTML文件，然后推送文件到github代码库对应目录下供github pages访问</span><br></pre></td></tr></table></figure>
+<h2 id="整体部署说明"><a href="#整体部署说明" class="headerlink" title="整体部署说明"></a>整体部署说明</h2><h3 id="博客访问流程图"><a href="#博客访问流程图" class="headerlink" title="博客访问流程图"></a>博客访问流程图</h3><p><img src="/images/01_upload/01_hexo/hexo_github.png" alt="get_blogs">  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">访问说明:  </span><br><span class="line">如图黑色访问流标记，githu为展示页面，类似web服务器访问根目录默认网页为index.html。hexo + github博客本质上将github作为web服务器，访问对应目录的index网页即可获取不同的博客内容，hexo的作用则是将本地编写的md文件生成静态HTML文件，然后推送文件到github代码库对应目录下供github pages访问 。</span><br></pre></td></tr></table></figure>
 
 <h3 id="部署流程说明"><a href="#部署流程说明" class="headerlink" title="部署流程说明"></a>部署流程说明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo+github pages是web服务器类架构。分为服务器类架构+客户端类架构，如github+hexo拆分开即为github作为展示工具，hexo为网页生成和维护工具。</span><br><span class="line">部署顺序严格上来说不分先后顺序，但是为了部署验证便捷，提升部署成功率，建议先部署github再配置hexo。</span><br></pre></td></tr></table></figure>
 
@@ -436,6 +436,11 @@
 
 <h1 id="Hexo新建博客"><a href="#Hexo新建博客" class="headerlink" title="Hexo新建博客"></a>Hexo新建博客</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  新建博客命令:	hexo new &lt;title&gt;      #title为博客文章标题</span><br><span class="line">或者hexo new post &lt;title&gt;</span><br><span class="line"></span><br><span class="line">  具体示例如下:</span><br><span class="line">  localhost:redblogs Red$ hexo new post &quot;redblogs test&quot;</span><br><span class="line">  INFO  Created: ~&#x2F;Downloads&#x2F;000-L2C-git&#x2F;redblogs.github.io&#x2F;redblogs&#x2F;source&#x2F;_posts&#x2F;redblogs-test.md</span><br><span class="line">  localhost:redblogs Red$ </span><br><span class="line"></span><br><span class="line">  然后再使用文本编辑器编写md文件</span><br><span class="line"></span><br><span class="line">  上传至github</span><br><span class="line">     命令hexo g -d</span><br><span class="line"></span><br><span class="line">  浏览器检查新建博客</span><br></pre></td></tr></table></figure>
 <p><img src="/images/01_upload/01_hexo/13.png" alt="hexo_new_blogs"></p>
+<h1 id="hexo和github-pages搭建博客原理"><a href="#hexo和github-pages搭建博客原理" class="headerlink" title="hexo和github pages搭建博客原理"></a>hexo和github pages搭建博客原理</h1><h2 id="hexo原理"><a href="#hexo原理" class="headerlink" title="hexo原理"></a>hexo原理</h2><h3 id="hexo的部署流程"><a href="#hexo的部署流程" class="headerlink" title="hexo的部署流程"></a>hexo的部署流程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、hexo g：生成静态index.html文件。将数据markdown文件和界面相结合生成静态文件的过程。会遍历主题文件中的 source 文件夹（js、css、img 等静态资源），然后建立索引，然后根据索引生成 pubilc 文件夹中，此时的 public 文件是由 html、 js、css、img 建立的纯静态文件可以通过 index.html 作为入口访问你的博客。</span><br><span class="line"></span><br><span class="line">2、hexo d：部署文件到github。部署主要是根据在 _config.yml 中配置的 git 仓库或者 coding 的地址，将 public 文件上传至 github 或者 coding 中。然后再根据上面的 github 提供的 pages 服务呈现出页面。当然你也可以直接将你生成的 public 文件上传至你自己的服务器上。</span><br></pre></td></tr></table></figure>
+
+<h3 id="hexo的优势"><a href="#hexo的优势" class="headerlink" title="hexo的优势"></a>hexo的优势</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hexo是一款优秀的模版引擎生成工具，可以配合Next主题配置独立的个性化Theme,上手简单，官方案例较为丰富。</span><br><span class="line">    作用：界面同数据分离，模板内容替换指定地方数据，实现业务和逻辑代码分离。</span><br><span class="line">    模板：Hexo默认用ejs，其他工具swig，jade等。</span><br><span class="line">    解析：md文件、layout布局调用其他文件。高代码复用性，最终生成Html页面。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Github-Pages原理"><a href="#Github-Pages原理" class="headerlink" title="Github Pages原理"></a>Github Pages原理</h2><h3 id=""><a href="#" class="headerlink" title=""></a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">github pages是集成在github里面，可以解析静态的文件，并渲染成页面的。所以最简单的github pages应该是这样，新建一个项目，项目里面包含一个index.html。在项目的settings中打开github pages。</span><br></pre></td></tr></table></figure>
 
           
         
@@ -788,7 +793,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">3.3k</span>
+    <span title="Site words total count">3.7k</span>
   
 </div>
 
