@@ -88,7 +88,7 @@
 <meta property="og:image" content="https://redblogs.github.io/images/01-upload/02-python_nginx/01.png">
 <meta property="og:image" content="https://redblogs.github.io/images/01-upload/02-python_nginx/02.png">
 <meta property="article:published_time" content="2020-08-04T00:26:34.000Z">
-<meta property="article:modified_time" content="2020-08-03T16:59:59.864Z">
+<meta property="article:modified_time" content="2020-08-03T17:20:38.565Z">
 <meta property="article:author" content="独孤小卫">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="uwsgi">
@@ -330,7 +330,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.8k 字
+                  2.1k 字
                 </span>
               
 
@@ -346,7 +346,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8 分钟
+                  9 分钟
                 </span>
               
             </div>
@@ -451,6 +451,71 @@
 
 <h4 id="浏览器访问验证-1"><a href="#浏览器访问验证-1" class="headerlink" title="浏览器访问验证"></a>浏览器访问验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">说明：访问nginx的端口即可转发到python应用程序。</span><br></pre></td></tr></table></figure>
 <p><img src="/images/01-upload/02-python_nginx/02.png" alt="check_gunicorn_nginx"></p>
+<h3 id="容器gunicorn管理工具常用supervisor命令"><a href="#容器gunicorn管理工具常用supervisor命令" class="headerlink" title="容器gunicorn管理工具常用supervisor命令"></a>容器gunicorn管理工具常用supervisor命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisor有两个命令，supervisord和supervisorctl</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">命令说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">supervisord</td>
+<td align="center">管理启动和配置supervisor本身</td>
+</tr>
+<tr>
+<td align="center">supervisorctl</td>
+<td align="center">管理使用supervisor启动和管理的自身的一些应用,如样例中的demo.py</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c &#x2F;opt&#x2F;fupython&#x2F;gunicorn&#x2F;supervisor.conf   ##启动supervisor</span><br><span class="line">supervisorctl start demo                                ##启动python程序</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">命令用途</th>
+<th align="center">命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">启动supervisord进程</td>
+<td align="center">supervisord -c /etc/supervisord.conf</td>
+</tr>
+<tr>
+<td align="center">启动gunicorn的python程序</td>
+<td align="center">supervisorctl start demo                   ;这里的hello是program的名字</td>
+</tr>
+<tr>
+<td align="center">重启</td>
+<td align="center">supervisorctl restart demo</td>
+</tr>
+<tr>
+<td align="center">停止</td>
+<td align="center">supervisorctl stop demo</td>
+</tr>
+<tr>
+<td align="center">查看运行状态</td>
+<td align="center">supervisorctl status demo</td>
+</tr>
+<tr>
+<td align="center">更新supervisor</td>
+<td align="center">supervisorctl update demo</td>
+</tr>
+<tr>
+<td align="center">重新读取</td>
+<td align="center">supervisorctl  reread</td>
+</tr>
+<tr>
+<td align="center">查看帮助命令</td>
+<td align="center">supervisorctl  help                         ;查看action的所有参数</td>
+</tr>
+<tr>
+<td align="center">生成默认配置文件</td>
+<td align="center">echo_supervisord_conf &gt; supervisor.conf</td>
+</tr>
+</tbody></table>
+<h2 id="本章节故障排查汇总"><a href="#本章节故障排查汇总" class="headerlink" title="本章节故障排查汇总"></a>本章节故障排查汇总</h2><h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><h4 id="故障现象：启动supervisor报错Error-Another-program-is-already-listening-on-a-port-that-one-of-our-HTTP-servers-is-configured-to-use"><a href="#故障现象：启动supervisor报错Error-Another-program-is-already-listening-on-a-port-that-one-of-our-HTTP-servers-is-configured-to-use" class="headerlink" title="故障现象：启动supervisor报错Error: Another program is already listening on a port that one of our HTTP servers is configured to use"></a>故障现象：启动supervisor报错Error: Another program is already listening on a port that one of our HTTP servers is configured to use</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">故障根因：&#x2F;tmp&#x2F;supervisor.sock 的socket文件存在，删除该文件即可</span><br><span class="line">修复命令:</span><br><span class="line">   unlink &#x2F;tmp&#x2F;supervisor.sock</span><br><span class="line">   rm -f &#x2F;tmp&#x2F;supervisord.pid</span><br></pre></td></tr></table></figure>
+<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><h4 id="故障现象-执行-supervisorctl-status-all报错http-localhost-9001-refused-connection"><a href="#故障现象-执行-supervisorctl-status-all报错http-localhost-9001-refused-connection" class="headerlink" title="故障现象 执行 supervisorctl status all报错http://localhost:9001 refused connection"></a>故障现象 执行 supervisorctl status all报错<a href="http://localhost:9001" target="_blank" rel="noopener">http://localhost:9001</a> refused connection</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">故障根因：配置文件错误，更改配置文件将;[inet_http_server]前边的注释去掉即可。</span><br><span class="line"></span><br><span class="line">修复后[inet_http_server]模块配置为</span><br><span class="line">       [inet_http_server]          </span><br><span class="line">       port&#x3D;127.0.0.1:9001</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -654,7 +719,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python的网站架构"><span class="nav-number">1.</span> <span class="nav-text">python的网站架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阐明WSGI协议"><span class="nav-number">1.1.</span> <span class="nav-text">阐明WSGI协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的WSGI容器"><span class="nav-number">1.2.</span> <span class="nav-text">常见的WSGI容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gunicorn的介绍及使用"><span class="nav-number">1.3.</span> <span class="nav-text">Gunicorn的介绍及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍Gunicorn"><span class="nav-number">1.3.1.</span> <span class="nav-text">介绍Gunicorn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Gunicorn及启动"><span class="nav-number">1.3.2.</span> <span class="nav-text">安装Gunicorn及启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装gunicorn"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">安装gunicorn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动Gunicorn"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">启动Gunicorn</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uWSGI的介绍及使用"><span class="nav-number">1.4.</span> <span class="nav-text">uWSGI的介绍及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍uWSGI"><span class="nav-number">1.4.1.</span> <span class="nav-text">介绍uWSGI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装uWSGI及启动"><span class="nav-number">1.4.2.</span> <span class="nav-text">安装uWSGI及启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装uwsgi"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">安装uwsgi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动uwsgi"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">启动uwsgi</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合WSGI容器和nginx网站服务器"><span class="nav-number">1.5.</span> <span class="nav-text">整合WSGI容器和nginx网站服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器uwsgi-nginx整合"><span class="nav-number">1.5.1.</span> <span class="nav-text">容器uwsgi+nginx整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例python程序"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">样例python程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器uwsgi配置文件编写及启动"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">容器uwsgi配置文件编写及启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx整合uwsgi配置文件"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">Nginx整合uwsgi配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器访问验证"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">浏览器访问验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器gunicorn-nginx整合"><span class="nav-number">1.5.2.</span> <span class="nav-text">容器gunicorn+nginx整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例python程序-1"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">样例python程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装supervisor"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">安装supervisor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#supervisor管理容器gunicorn配置文件编写及启动"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">supervisor管理容器gunicorn配置文件编写及启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx整合uwsgi配置文件-1"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">Nginx整合uwsgi配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器访问验证-1"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">浏览器访问验证</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python的网站架构"><span class="nav-number">1.</span> <span class="nav-text">python的网站架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阐明WSGI协议"><span class="nav-number">1.1.</span> <span class="nav-text">阐明WSGI协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的WSGI容器"><span class="nav-number">1.2.</span> <span class="nav-text">常见的WSGI容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gunicorn的介绍及使用"><span class="nav-number">1.3.</span> <span class="nav-text">Gunicorn的介绍及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍Gunicorn"><span class="nav-number">1.3.1.</span> <span class="nav-text">介绍Gunicorn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Gunicorn及启动"><span class="nav-number">1.3.2.</span> <span class="nav-text">安装Gunicorn及启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装gunicorn"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">安装gunicorn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动Gunicorn"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">启动Gunicorn</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uWSGI的介绍及使用"><span class="nav-number">1.4.</span> <span class="nav-text">uWSGI的介绍及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍uWSGI"><span class="nav-number">1.4.1.</span> <span class="nav-text">介绍uWSGI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装uWSGI及启动"><span class="nav-number">1.4.2.</span> <span class="nav-text">安装uWSGI及启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装uwsgi"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">安装uwsgi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动uwsgi"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">启动uwsgi</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合WSGI容器和nginx网站服务器"><span class="nav-number">1.5.</span> <span class="nav-text">整合WSGI容器和nginx网站服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器uwsgi-nginx整合"><span class="nav-number">1.5.1.</span> <span class="nav-text">容器uwsgi+nginx整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例python程序"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">样例python程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器uwsgi配置文件编写及启动"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">容器uwsgi配置文件编写及启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx整合uwsgi配置文件"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">Nginx整合uwsgi配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器访问验证"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">浏览器访问验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器gunicorn-nginx整合"><span class="nav-number">1.5.2.</span> <span class="nav-text">容器gunicorn+nginx整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例python程序-1"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">样例python程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装supervisor"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">安装supervisor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#supervisor管理容器gunicorn配置文件编写及启动"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">supervisor管理容器gunicorn配置文件编写及启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx整合uwsgi配置文件-1"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">Nginx整合uwsgi配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器访问验证-1"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">浏览器访问验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器gunicorn管理工具常用supervisor命令"><span class="nav-number">1.5.3.</span> <span class="nav-text">容器gunicorn管理工具常用supervisor命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本章节故障排查汇总"><span class="nav-number">1.6.</span> <span class="nav-text">本章节故障排查汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题一"><span class="nav-number">1.6.1.</span> <span class="nav-text">问题一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#故障现象：启动supervisor报错Error-Another-program-is-already-listening-on-a-port-that-one-of-our-HTTP-servers-is-configured-to-use"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">故障现象：启动supervisor报错Error: Another program is already listening on a port that one of our HTTP servers is configured to use</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题二"><span class="nav-number">1.6.2.</span> <span class="nav-text">问题二</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#故障现象-执行-supervisorctl-status-all报错http-localhost-9001-refused-connection"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">故障现象 执行 supervisorctl status all报错http:&#x2F;&#x2F;localhost:9001 refused connection</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -688,7 +753,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">5.5k</span>
+    <span title="Site words total count">5.8k</span>
   
 </div>
 
